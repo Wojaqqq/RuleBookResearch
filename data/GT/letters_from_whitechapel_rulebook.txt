@@ -105,70 +105,29 @@ Second Part: Hunting
 2. Police: Hunting the Monster
 3. Police: Clues and Suspicion
 
-!!!!!!!!!!!!
-START FROM HERE:
- First Part: Hell
-Darkness falls on the notorious alleys of Whitechapel and fear
-becomes palpable for those who wander in the night. Every shadow could
-be Jack's own.
-1.
-Jack the Ripper: Preparing the Scene
+First Part: Hell
+1. Jack the Ripper: Preparing the Scene
 Jack collects Special Movement tokens (Coach and Alley):
-,Night
-,Special Movement tokens
-1
-,August 31st, 1888
-,3 Coach tokens and 2 Alley tokens
-2
-,September 8th, 1888
-,2 Coach tokens and 2 Alley tokens
-3
-,September 30th, 1888
-,2 Coach tokens and 1 Alley token
-4
-,November 9th, 1888
-,1 Coach token and 1 Alley token
-2.
-Jack the Ripper: The Targets are Identified
+First Night - Special Movement tokens
+3 Coach tokens and 2 Alley tokens
+Second Night - Special Movement tokens
+2 Coach tokens and 2 Alley tokens
+Third Night - Special Movement tokens
+2 Coach tokens and 1 Alley token
+Fourth Night - Special Movement tokens
+1 Coach token and 1 Alley token
+
+2. Jack the Ripper: The Targets are Identified
 Jack collects Woman tokens according to which night it is:
-APRIL 1838
-Tuesday the 3rd. Emma Smith
-was viciously assaulted at the
-junction of Osborn Street and
-Brick Lane (84/in the early
-hours of the day. She survived
-the attack and managed to return
-to her lodging house at '8 George
-Street in Spitalfields. She was
-taken to the London Hospital.
-where she fell into a coma and
-died the next day at 9:00 am. She
-had claimed to have been attacked
-by three men.
-Saturday the 7th. The inquest
-of Emma Smith's death was
-conducted by the coroner for
-East Middlesex. Wynne
-Edwin Baxter and attended
-by the local inspector of the
-Metropolitan Police Service.
-H Division Whitechapel
-Edmund Reid (green Head of the
-Investigation).
-,Night
-,Woman tokens
-1
-,August 31st, 1888
-,8 Women, 5 of which are marked
-2
-,September 8th, 1888
-,7 Women, 4 of which are marked
-3
-,September 30th, 1888
-,6 Women, 3 of which are marked
-4
-,November 9th, 1888
-,4 Women, 1 of which is marked
+First Night - Woman tokens
+8 Women, 5 of which are marked
+Second Night - Woman tokens
+7 Women, 4 of which are marked
+Third Night - Woman tokens
+6 Women, 3 of which are marked
+Fourth Night - Woman tokens
+4 Women, 1 of which is marked
+
 Jack places the Woman tokens facedown on red numbered circles of the
 game board. He may arrange them any way he wishes.
 The Woman tokens marked with red on their faces represent Jack the
@@ -180,40 +139,10 @@ Note: On the second and subsequent Nights of the game, Jack cannot place
 Woman tokens on the red numbered circles occupied by red Crime Scene
 markers.
 
-pector
-rund Reid
-tan Police H Division
-Whitechapel) Criminal
-Inyegation Dept.
-AUGUST 1888
-Tuesday the 7th. Martha
-T'abram was murdered around
-2:30 am. Her body was found near
-George Yard Buildings.in George
-Yard. She had died as a result of
-multiple stab wounds.
-Friday the 3'st. Mary Ann
-Nichols was murdered. Her body
-was found around 3:45 am.lying
-outside the entrance of a stabbe
-in Buck's Row (later renamed
-Durward Street) not far
-fromthe London Hospital.
-Investigations were attended by
-the Bethnal Green Division of
-the Metropolitan Police. The
-possibility that this might be the
-work of a serial killer caught the
-attention of some Scotland Yard
-detectives, including Frederick
-Abberline (red Head of the
-Investigation).
-
 Jack places Woman tokens facedown on red numbered circles. He is the
 only one who knows which ones are marked. His next victim is among
 them!
-3.
-Police: Patrolling the Streets
+3. Police: Patrolling the Streets
 The detectives turn over the top tile of the Head of the Investigation pile. The
 player controlling the Policeman of the corresponding color is the Head of the
 Investigation for the current Night.
@@ -226,12 +155,9 @@ confuse Jack, according to the Head of the Investigation's strategy.
 Remember, the marked faces of the Police Patrol tokens remain hidden as
 they are placed. The Head of the Investigation is the only one who knows the
 actual positions of the Policemen!
-
 The Head of the Investigation places the Police Patrol tokens on the
 game board. Jack must guess where the Policemen are and try not to get
 caught!
--10-
-Letters from Whitechapel
 From the second Night on, the Head of the Investigation places the Police
 Patrol tokens as he wishes among seven locations according to the following
 restrictions:
@@ -273,9 +199,7 @@ If Jack decides to kill, the Night then continues with phase 8, "Jack the Ripper
 First, the Time of the Crime token is moved on to the next yellow Roman numeral in ascending order.
 Then, the Head of the Investigation must move each of the Wretched pawns on the game board.
 Each one must move along dotted lines to an adjacent, unoccupied numbered circle.    
-The Wretched pawn on numbered circle 65 must move. The Head of the Investigation must 
-choose a destination from among numbered circles 63, 66, 51, 67, 84, 83, and 82. 
-He chooses 82 and moves the Wretched pawn there. A Wretched pawn must obey the following 
+A Wretched pawn must obey the following 
 movement restrictions. It cannot: end its movement adjacent to a Police Patrol token; 
 cross a Police Patrol token during the Wretched's movement; or end its movement 
 in a circle containing a Crime Scene marker. 
@@ -298,7 +222,7 @@ They replace the color-marked tokens with the corresponding Policeman pawns and 
 he fake tokens from the game board. They also remove from the game board any Wretched pawns still in play.    
 
 Second Part: Hunting
-Jack the Ripper: Escape in the Night
+1. Jack the Ripper: Escape in the Night
 Jack moves from his current numbered circle to an adjacent numbered circle, following the dotted lines.
 He may not move over a Crossing occupied by a Policeman pawn.  Jack plots his move secretly, noting his 
 destination circle on his sheet in the next available space to the right of his current location, in the 
@@ -314,97 +238,116 @@ his escape was successful, and the current Night's Hunting ends.  See "The End o
 page 18, for more information.  If Jack runs out of moves (that is, if he fills in the "15" square 
 on his sheet) without reaching his Hideout and declaring his escape, he loses the game.  
 See "The End of the Game," page 22, for more information.
-
-Police: Hunting the Monster
+2. Police: Hunting the Monster
 After consulting together, the detectives move their Policeman pawns.  Each player moves the pawn(s) whose Policemen he controls, starting with the Head of the Investigation and proceeding clockwise around the table.  If a player controls multiple pawns, he chooses the order in which he moves them.  The Policeman pawns are moved along the dotted lines.  When moving, a policeman can move up to a distance of two (0, 1, or 2) Crossings.  Policeman pawns ignore numbered circles when moving.    
-
-JULY 1889
-
-Wednesday the 17th. Alice McKenzie was murdered in Castle Alley.  Her wounds were not as deep as those of previous victims, however.    
-
-The yellow Policeman pawn moves two Crossings.  If Jack traveled down that street, he surely left a clue!  When moving, a Policeman pawn can move over other Policeman pawns, but cannot end its move in the same Crossing as another Policeman pawn.    
-
-Police: Clues and Suspicion
+When moving, a Policeman pawn can move over other Policeman pawns, but cannot end its move in the same Crossing as another Policeman pawn.    
+3. Police: Clues and Suspicion
 Optional Rule: If the False Clue optional rule is being used, Jack can collect and use False Clue markers in this phase.  See "False Clues," page 23.    
-
 Starting with the Head of the Investigation and proceeding clockwise around the table, each detective states, for each Policeman pawn he controls, that the Policeman is either looking for clues or executing an arrest.  Both types of actions can be undertaken in the numbered circles adjacent to that Policeman pawn (i.e., in the numbered circles directly connected by dotted lines to the Crossing where the Policeman pawn is located).  There cannot be an intervening Crossing on the dotted line connecting the Crossing the Policeman pawn is on and the circle he wants to search for clues or make an arrest in.    
-
--16-
-
---- PAGE 6 ---
-
-Letters from Whitechapel
-
 Numbered circles 99, 100, and 120 are adjacent to the yellow Policeman pawn.  Circle 83 is not adjacent, because the route to 83 is interrupted by a Crossing.  Each Policeman pawn can execute only one action.  That is, it can either look for clues or execute an arrest, but not both.  (However, if a player controls several Policeman pawns, he can choose a different action for each one.)    
 
 Looking for Clues
-
 To look for clues, the detective announces the number of an adjacent numbered circle he wishes to inspect.  Jack checks to see if that number appears anywhere on his sheet in the current Night's row.  If it does, he places a Clue marker on that numbered circle, and that Policeman's action ends.  If it does not appear, the detective announces the number of another adjacent numbered circle.  This process repeats until either a Clue marker is placed or no more adjacent numbered circles remain to be inspected.    
-
-AUGUST 1889
-
-Tuesday the 10th. An unidentified woman's body was found under a railway arch in Pinchin Street, just as with the Whitehall Mystery.    
-
-JUNE 1890
-
-Saturday the 1st. James Monro was replaced as Commissioner by Sir Edward Bradford.    
-
 The yellow Policeman decides to look for clues.  He announces "99!"  That number does not appear in the current Night's row, so Jack replies negatively.  The yellow Policeman calls "100!"  That number does appear in the current Night's row, so Jack places a Clue token on the corresponding numbered circle.  Jack's been there tonight... but how long ago?  Even through numbered circle 120 is also adjacent to the yellow Policeman's location, the yellow Policeman cannot investigate it now because finding a clue ends his action.    
-
--17-
-
---- PAGE 7 ---
-
-Letters from Whitechapel
-
 Optional Rules: If the False Clue rule is being used, Jack receives a False Clue marker every time he reveals five Clue markers in the same Night.  See "False Clues," page 23, for more information.    
 
 Executing an Arrest
-
 To execute an arrest, the detective announces the number of one (and only one!) numbered circle that is adjacent to his Policeman pawn.  If the announced number is Jack's current location (that is, the most recent number Jack recorded on his sheet), Jack is arrested and loses the game.  If the announced number is not Jack's current location, no further information is given and that Policeman's action ends.    
-
-FEBRUARY 1891
-
-Friday the 13th. Frances Coles was murdered under a railway arch in Royal Mint Street.  A man named James Sadler, who had been seen with Coles earlier, was arrested by the police and charged with her murder.  A high-profile investigation by Donald Swanson (brown Head of the Investigation) and Henry Moore into Sadler's history and his whereabouts at the time of the previous Whitechapel murders suggests that the police suspected him of being Jack the Ripper.    
-
 The yellow Policeman decides to execute an arrest.  He chooses circle 99, which is adjacent.  Jack checks his current location and replies negatively.  If Jack isn't there, where is he?    
-
 If Jack has neither been caught nor reached his Hideout after all Policemen have taken actions, play proceeds with another iteration of Hunting phase 1, "Jack the Ripper: Escape in the Night."    
 
 The End of the Hunting
-
 If Jack is on the numbered circle he chose as his Hideout, he may declare his escape, and the Hunting - and with it, the Night - ends.    
-
 Remove all Clue markers from the game board.  Leave the Policeman pawns and Crime Scene markers in place.  Remove the Special Movement tokens and the Jack pawn from the move track.  If the False Clue optional rules are being used, discard any unused False Clue markers.  The next Night then begins with Hell phase 1, "Jack the Ripper: Preparing the Scene."  Jack moves his Jack pawn to the next Night on the Night track.  Remember: If Jack fails to reach his Hideout and declare his escape by the end of the last possible move on his move track sheet (square "15"), he loses the game.    
 
-
-
-
 Special Movements
-Coach: Move two numbered circles in one turn, even through Policemen.
-Alley: Move across a block of houses.
+
+Instead of carrying out a normal movement, Jack can decide to use one of his Special Movement tokens.  When used, a Special Movement token is placed on the space(s) of the move track corresponding to the turn that move was made.  That token cannot be used again that Night.  If Jack uses a Special Movement token, he must apply its effects. 
+He cannot use a Special Movement token and then make a normal movement, instead.    
+
+Important: Jack cannot declare his escape if he just used a Special Movement to move onto his Hideout.  The last move that takes Jack into his Hideout must always be a normal move.    
+
+There are two kinds of Special Movements:
+Coach: Jack can use a Coach to move to two adjacent numbered circles in succession on the game board at once like a double move.  Moreover, with the Coach, Jack can move through Crossings containing Policeman pawns.  The two numbered circles involved in a Coach move must be different from each other and from the circle he started the move from.  Both of the circles he moved to must be recorded in separate places on Jack's sheet in the proper order.  Jack's pawn on the move track is moved twice, and the Coach token is placed so it covers both of those spaces on the move track.  Jack can use three Coaches on the first Night, two on each of the second and third Nights, and one on the fourth Night.    
+Alley: Jack can use an Alley to cross a block of houses, moving from one numbered circle on that block's perimeter to any other numbered circle on that perimeter.  A block of houses is an area of the game board that's completely bounded, but not interrupted, by dotted lines.  When Jack uses an Alley, he places that token on the corresponding space of the move track.  Jack can use two Alleys on each of the first and second Nights and one Alley on each of the third and fourth Nights. 
 
 The Third Night: The Double Event
-On September 30th, Jack must kill **two** victims instead of one. The second crime scene serves as Jack's first move of the night.
+On the third Night, September 30th, Jack the Ripper must kill two of the Wretched.  Normal procedures are followed with the exception that Jack chooses two victims instead of one during phase 5, "Jack the Ripper: Blood on the Streets."  Jack chooses two Wretched pawns and replaces each one with a Crime Scene marker.  Then he notes the number of those two numbered circles on his sheet in two consecutive cells: the one indicated by the Time of the Crime token and the one to its right.  He may record them in either order, as he prefers.    
+Note: Because the second Crime Scene of the third Night counts as Jack's first move that Night, the detectives act first, with play starting from Hunting phase 2, "Police: Hunting the Monster."  The Hunting then proceeds as normal.    
+Jack starts his escape from the location corresponding to the second (rightmost) number he recorded.  Jack places his Jack pawn on the space to the right of the Time of the Crime token on the Move track, as Jack's "movement" from the first crime scene to the second uses up his first move of the night.  The detectives know both crime scenes, but not their order, so they cannot be sure exactly where Jack is at the beginning of the third Night's Hunting.
+On the third Night, Jack chooses two victims, placing Crime Scene markers on each of the numbered circles 3 and 27.  He secretly records on his sheet "27" and then "3."  His second (rightmost) victim is the one on numbered circle 3, the location from which he'll begin his escape... But the detectives don't know which one is the correct one!
 
-End of the Game
-Jack Wins if he kills five victims and escapes successfully for four nights.
-Police Win if they arrest Jack or prevent him from reaching his hideout.
+SUGGESTIONS AND TIPS
+Choose the most expert player of the group for the role of Jack.    
+Jack the Ripper should use the Coach and Alley tokens wisely, in order to have them when he really needs them.    
+Jack the Ripper should not overestimate the number of moves he has left for the Night.  The detectives might force him into a fatal detour with an unexpected move at any time.    
+The detectives should not necessarily focus on catching Jack on the first Night at all costs.  Early in the game, it is much more important to narrow down the areas where Jack's Hideout might be.    
+The detectives will have to discuss their tactics in front of Jack, but they should wait for Jack to move before they start to talk to avoid giving away too much about their plans.    
+Jack the Ripper should try to avoid giving away his location by the way he looks at the game board.    
 
-Optional Rules
-To Help Jack the Ripper:
-Jack’s Letters: Special effects that manipulate the police patrols.
-False Clues: Jack can create misleading clues to throw off the detectives.
+The End of the Game
+Jack the Ripper wins the game if he kills five victims without being caught, returning safely to his Hideout at the end of all four Nights.  The police detectives win the game if they catch Jack, or prevent him from reaching his Hideout within the permitted number of moves.    
 
-To Help the Police:
-Rushing: Policemen can move extra spaces.
-Area Arrests: Arrest attempts can target multiple locations.
-Catch Me, If You Can: Jack's hideout cannot be next to a crime scene.
-I Know Your Address: A special rule allowing police to attempt an instant arrest.
+Jack's Letters - optional Rules
+
+To Help Jack the Ripper
+On each of the second, third, and fourth Nights, Jack the Ripper can use one Jack's Letter to change the position of the Police Patrols.  A Letter can only be used after the Police Patrol tokens have been placed.  Once a given Letter is used and its effect applied, that Letter is removed from the game.  Another Letter cannot be used until the next Night.  Three of the Letters (Dear Boss, Saucy Jack, and From Hell) are played during the Hell phase 3, "Police: Patrolling the Streets."  The remaining Letter (Goulston Street) is played during Hunting phase 1, "Jack the Ripper: Escape in the Night."    
+
+These are the effects of each Letter:
+"Dear Boss"
+Jack moves a Police Patrol token (without looking at whether it is marked) from the A/a or C/b section of the game board to any unoccupied yellow-bordered Crossing.    
+
+"Saucy Jacky"
+Jack chooses two Police Patrol tokens from the B/a or B/b sections of the game board.  The Head of the Investigation moves both of them to any other unoccupied yellow-bordered Crossings.    
+
+"From Hell"
+Jack moves a Police Patrol token (without looking at whether it is marked) from the A/b or C/a section of the game board to any unoccupied yellow-bordered Crossing.    
+
+"Goulston Street"
+This Letter represent graffiti rather than an actual letter.  It is played during the Hunting, immediately after Jack has moved in phase 1, "Jack the Ripper: Escape in the Night," but before any of the Policemen move in phase 2, "Police: Hunting the Monster."  When Jack uses this Letter, Jack chooses either the red, green, or blue Policeman pawns.  Then, the Head of the Investigation selects either the chosen pawn (which represents the Metropolitan police) or the brown pawn (which represents the City of London police) and must immediately move that pawn to Goulston Street, which is indicated by the red-bordered Crossing at A5/b8.
+
+False Clues
+For every five yellow Clue markers he reveals to the Police during a given Night, Jack gains a blue False Clue marker.  Jack can place one of these False Clue markers on any numbered circle at the beginning of phase 3, "Police: Clues and Suspicion."  When placed in this way, a False Clue token blocks that numbered circle for the rest of the Night, meaning that a Policeman pawn cannot look for clues or execute an arrest there.    
+
+To Help the Police
+Rushing
+During Hunting, phase 3, "Police: Clues and Suspicion" each detective, starting with the Head of the Investigation and proceeding clockwise, has a third option to choose from for his action: rushing.    
+
+Rushing: A detective chooses a Policeman pawn that can still act and moves it to an adjacent Crossing (ignoring numbered circles).    
+
+Area Arrests
+During phase 3, "Police: Clues and Suspicion," when executing an arrest, the detective announces all of the numbered circles adjacent to his Policeman pawn's location.  If any of these numbered circles correspond to Jack's current location, Jack is arrested and loses the game.  Otherwise, no information is given.    
+
+Catch Me, If You Can
+During part 6 of the Game Preparation, when Jack secretly chooses one of the numbered circles on the game board as his Hideout, he cannot choose red numbered circles or numbered circles adjacent to them.  He then writes the number on the move track sheet as usual.    
+
+I Know Your Address
+During Hell, phase 3, "Police: Patrolling the Streets," if the revealed Head of the Investigation tile is Swanson (brown Head of the Investigation) or Abberline (red Head of the Investigation), the Head of the Investigation detective can immediately execute an arrest, declaring the number of any circle on the game board.  If that numbered circle was choosen by Jack as his Hideout, the detectives win the game.  This ability can be used only once during the game. 
+
 
 Summary of Gameplay
 
-Each night consists of:
-1. Hell Phase (Setup, Murder, Police Setup)
-2. Hunting Phase (Jack Escapes, Police Investigate, Arrest Attempt)
-If Jack escapes for four nights, he wins. If the police catch him, they win!
+The game is divided into four Nights.  Each Night is divided into two parts.  Each part has a number of different phases.    
+
+SPECIAL THANKS BY THE DESIGNERS
+
+To Alessandro Drei for his immense help, to Loris Casagrandi, Rob Robinson, and Don C. Donelson for their precious suggestions, to Rosalia Alvisi and Linda Cavina for the advertising they have done and they still do, to Massimiliano Calimera and all the journalists of Gioconomicon for their true and honest service, to Alessandro Lonzi and Marina Morbidoni for their great photo shoots, and to Andrea "Jack" Dominici and Chiara "Sventurata" Pappi for their great performance in those pictures, to R.R. "Zombiegod" for those great inspiring pictures, and lastly to Roberto Di Meglio for his trust in us.    
+
+A Table:
+"First Part: HELL"
+
+"1" "Jack the Ripper: Preparing the Scene.  Jack collects the Special Movement tokens.    
+"2" "Jack the Ripper: The Targets are Identified.  Jack places Woman tokens facedown on red numbered circles.  Jack cannot place tokens on circles occupied by Crime Scene markers.    
+"3" "Police: Patrolling the Streets.  The detectives reveal a Head of the Investigation tile.  That player will be the Head of the Investigation for the current Night.  He places seven Police Patrol tokens on the game board.    
+"4" "Jack the Ripper: The Victims are Chosen.  The Woman tokens are revealed.  Those marked with red are replaced with Wretched pawns.  The Time of the Crime token is placed on the yellow Roman numeral I on the move track.    
+"5" "Jack the Ripper: Blood on the Streets.  Jack chooses between killing a victim (and jumping to phase 8) or waiting (continue to phase 6).    
+"6" "Police: Suspense Grows.  The Time of the Crime token is moved to the next Roman numeral in ascending order.  The Head of the Investigation moves each Wretched pawn.    
+"7" "Jack the Ripper: Ready to Kill.  Jack chooses and reveals a Police Patrol token.  The game continues with another iteration of phase 5.    
+"8" "Jack the Ripper: A Corpse on the Sidewalk.  Jack records on his sheet the number of the circle marked with the most recent Crime Scene marker.    
+"9" "Police: Alarm Whistles.  The detectives reveal the remaining Police Patrol tokens, replace the marked ones with the corresponding Policeman pawns, and remove from the game board the remaining Wretched pawns.  The Hunting begins!    
+
+A Table:
+"Second Part: HUNTING"
+"1" "Jack the Ripper: Escape in the Night.  Jack moves from his current location to an adjacent numbered circle, following dotted lines, recording his new location, and advancing his pawn on the move track.    
+"2" "Police: Hunting the Monster.  Each detective moves his own Policeman pawn(s), starting with the Head of the Investigation and proceeding clockwise.    
+"3" "Police: Clues and Suspicion.  Starting with the Head of Investigation and proceeding clockwise, each Policeman pawn takes an action, either   

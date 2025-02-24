@@ -93,7 +93,7 @@ two dice, and are subject to any privileges or penalties pertaining to
 the space on which you land. Retaining the dice, throw again and move
 your token as before. If you throw doubles three times in succession,
 move your token immediately to the space marked “In Jail” (see JAIL).
-“GO”: Each time a player's token lands on or passes over
+“GO”: Each time a player's token lands on or passes over
 GO, whether by throwing the dice or drawing a card,
 the Banker pays him/her a $200 salary.
 The $200 is paid only once each time around
@@ -126,7 +126,7 @@ The owner may not collect the rent if he/she fails to ask for it before
 the second player following throws the dice.
 “CHANCE” AND “COMMUNITY CHEST”: When you land on either of
 these spaces, take the top card from the deck indicated, follow the
-instructions and retum the card facedown to the bottom of the deck.
+instructions and retum the card facedown to the bottom of the deck.
 The “Get Out of Jail Free” card is held until used and then returned to
 the bottom of the deck. If the player who draws it does not wish to use
 it, he/she may sell it, at any time, to another player at a price agreeable to both.
@@ -157,7 +157,7 @@ fine. You then get out of Jail and immediately move forward the number
 of spaces shown by your throw.
 Even though you are in Jail, you may buy and sell property, buy and
 sell houses and hotels and collect rents.
-“FREE PARKING”: A player landing on this place does not
+“FREE PARKING”: A player landing on this place does not
 receive any money, property or reward of any kind. This is just a “free” resting place.
 HOUSES: When you own all the properties in a color-group
 you may buy houses from the Bank and erect them on those properties.
