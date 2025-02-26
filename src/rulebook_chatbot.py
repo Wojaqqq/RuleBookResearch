@@ -1,15 +1,17 @@
 import os
 import json
 import numpy as np
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 import faiss
 import PyPDF2
+from dotenv import load_dotenv
 
+load_dotenv()
 
-openai.api_key = "your_openai_api_key"
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  
-PDF_FOLDER = os.path.join(BASE_DIR, "../data/pdfs")  
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PDF_FOLDER = os.path.join(BASE_DIR, "../data/pdfs")
 GT_FOLDER = os.path.join(BASE_DIR, "../data/GT")
 EXTRACTED_FOLDER = os.path.join(BASE_DIR, "../data/extracted")
 METADATA_FILE = os.path.join(BASE_DIR, "../data/metadata.json")
@@ -34,7 +36,10 @@ class RulebookChatbot:
     def _update_vector_store_if_needed(self):
         """Check for new PDFs and update the FAISS index accordingly."""
         existing_games = {entry["game"] for entry in self.metadata}
-        new_files = [f for f in os.listdir(PDF_FOLDER) if f.endswith(".pdf") and f.replace(".pdf", "") not in existing_games]
+        new_files = [
+            f for f in os.listdir(PDF_FOLDER)
+            if f.endswith(".pdf") and f.replace(".pdf", "") not in existing_games
+        ]
 
         if not new_files:
             print("No new PDFs found. Loading existing FAISS index...")
@@ -73,7 +78,7 @@ class RulebookChatbot:
 
             if self.vector_store is None:
                 self.vector_store = faiss.IndexFlatL2(embeddings.shape[1])  # Create a new FAISS index
-            
+
             self.vector_store.add(embeddings)  # Add new embeddings
             faiss.write_index(self.vector_store, VECTOR_STORE_FILE)  # Save updated FAISS index
 
@@ -121,49 +126,53 @@ class RulebookChatbot:
         return text.strip()
 
     def _get_embedding(self, text):
-        """Generate an embedding vector using OpenAI."""
-        response = openai.Embedding.create(
-            input=text,
-            model="text-embedding-ada-002"
-        )
-        return np.array(response["data"][0]["embedding"])
+        """Generate an embedding vector using OpenAI's latest API.
+        
+        Note: The new API requires the input to be a list of strings.
+        """
+        response = client.embeddings.create(input=[text],
+        model="text-embedding-ada-002")
+        return np.array(response.data[0].embedding)
 
     def search_relevant_text(self, query, game_name):
-        """Find the most relevant rule snippet for a query."""
+        """Find the most relevant rule snippet for a query.
+        
+        Returns:
+            (bool, str): A tuple where the first element indicates if a relevant rule was found,
+                         and the second element is the text snippet or an error message.
+        """
         if not self.vector_store:
-            return "No rulebooks found."
+            return False, "No rulebooks found."
 
         embedding = self._get_embedding(query).astype("float32")
         _, idx = self.vector_store.search(np.array([embedding]), k=1)
 
         for i in idx[0]:
             if i < len(self.metadata) and self.metadata[i]["game"] == game_name:
-                return self.metadata[i]["text"][:1000]
+                return True, self.metadata[i]["text"][:1000]
 
-        return "No relevant rules found for this game."
+        return False, "No relevant rules found for this game."
 
     def ask_chatgpt(self, game_name, user_query):
         """Retrieve relevant rules and query ChatGPT while tracking token usage."""
         if game_name not in self.game_rules:
             return {"error": "Game not found in database."}
 
-        relevant_found, relevant_text = self.search_relevant_text(user_query, game_name)
+        found, relevant_text = self.search_relevant_text(user_query, game_name)
 
-        if relevant_found:
-            chat_response = openai.ChatCompletion.create(
-                model="gpt-4",
-                messages=[
-                    {"role": "system", "content": f"You are an expert on board game rules for {game_name}."},
-                    {"role": "user", "content": f"Here are the relevant rules: {relevant_text}\n\nQuestion: {user_query}"}
-                ]
-            )   
+        if found:
+            chat_response = client.chat.completions.create(model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": f"You are an expert on board game rules for {game_name}."},
+                {"role": "user", "content": f"Here are the relevant rules: {relevant_text}\n\nQuestion: {user_query}"}
+            ])
 
-            response_text = chat_response["choices"][0]["message"]["content"]
-            total_tokens = chat_response["usage"]["total_tokens"]
+            response_text = chat_response.choices[0].message.content
+            total_tokens = chat_response.usage.total_tokens
 
             return {
                 "response": response_text,
                 "tokens_used": total_tokens
             }
         else:
-            return {"error": f"No relevant text found for {game_name}"}
+            return {"error": relevant_text}
