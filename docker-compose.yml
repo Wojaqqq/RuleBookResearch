@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  rulebook_app:
+    container_name: "rulebookmaster_app"
+    image: "rulebookmaster_image"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"

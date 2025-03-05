@@ -1,10 +1,20 @@
-.*
 __pycache__/
 
+.venv/
+env/
+venv/
+
+!/data/pdfs/
+!/data/extracted/
+!/data/GT/
+/data/fine_tune_archive/
+
+/data/pdfs/*
+/data/extracted/*
+/data/GT/*
+
 .env
-.venv
-venv
+!.env.template
 
-!.gitignore
-
-data
+*.log
+*.tmp

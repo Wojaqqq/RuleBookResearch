@@ -1,46 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Board Game Rule Assistant - POC</title>
+    <title>Board Game Rule Assistant</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .side-image {
+            height: 100vh;
+            object-fit: cover;
+        }
+        .content-area {
+            display: flex;
+            height: 100vh;
+        }
+        .form-area {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
 </head>
-<body class="container mt-5">
+<body>
 
-<h2 class="mb-4">Board Game Rule Assistant - Proof of Concept</h2>
-
-<form method="POST">
-    <div class="form-group">
-        <label for="game">Choose Game:</label>
-        <select class="form-control" id="game" name="game" required>
-            <option value="" disabled selected>-- Select a Game --</option>
-            {% for game in games %}
-                <option value="{{ game }}" {% if game == selected_game %}selected{% endif %}>{{ game }}</option>
-            {% endfor %}
-        </select>
+<div class="content-area">
+    <div>
+        <img src="{{ url_for('static', filename='rule-book-wizard.png') }}" alt="Wizard reading rulebook" class="side-image">
     </div>
 
-    <div class="form-group">
-        <label for="query">Enter Your Rule Question:</label>
-        <textarea class="form-control" id="query" name="query" rows="3" required>{{ query or '' }}</textarea>
+    <div class="form-area">
+        <h2 class="mb-4">Rule Book Master POC</h2>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="game">Choose Game:</label>
+                <select class="form-control" id="game" name="game" required>
+                    <option value="" disabled selected>-- Select a Game --</option>
+                    {% for game in games %}
+                        <option value="{{ game }}" {% if game == selected_game %}selected{% endif %}>{{ game }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="query">Enter Your Rule Question:</label>
+                <textarea class="form-control" id="query" name="query" rows="3" required>{{ query or '' }}</textarea>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="models" value="gpt4o" checked>
+                <label class="form-check-label">Normal GPT-4o-mini</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="models" value="fine_tuned">
+                <label class="form-check-label">Fine-tuned Model</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="models" value="embedding">
+                <label class="form-check-label">Embedding Search</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Ask Selected Models</button>
+            <a href="/" class="btn btn-secondary mt-3">Clear</a>
+        </form>
+
+        {% if responses %}
+        <hr>
+        <div class="row mt-4">
+            {% if 'gpt4o' in selected_models %}
+            <div class="col-md-4">
+                <h5>GPT-4o-mini Response</h5>
+                <pre>{{ responses['gpt4o'] }}</pre>
+            </div>
+            {% endif %}
+            {% if 'fine_tuned' in selected_models %}
+            <div class="col-md-4">
+                <h5>Fine-tuned Model Response</h5>
+                <pre>{{ responses['fine_tuned'] }}</pre>
+            </div>
+            {% endif %}
+            {% if 'embedding' in selected_models %}
+            <div class="col-md-4">
+                <h5>Embedding Search Response</h5>
+                <pre>{{ responses['embedding'] }}</pre>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
 
-    <button type="submit" class="btn btn-primary">Ask Both Models</button>
-    <a href="/" class="btn btn-secondary">Clear</a>
-</form>
-
-{% if fine_tuned_response and regular_response %}
-<hr>
-<div class="row mt-4">
-    <div class="col-md-6">
-        <h5>Fine-tuned Model Response</h5>
-        <pre>{{ fine_tuned_response }}</pre>
-    </div>
-    <div class="col-md-6">
-        <h5>Regular GPT-4o-mini Response</h5>
-        <pre>{{ regular_response }}</pre>
+    <div>
+        <img src="{{ url_for('static', filename='shelf.png') }}" alt="Magical Library Shelf" class="side-image">
     </div>
 </div>
-{% endif %}
 
 </body>
 </html>
