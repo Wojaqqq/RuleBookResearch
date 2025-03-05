@@ -2,214 +2,253 @@ import os
 import json
 import numpy as np
 import openai
-import tiktoken
 import faiss
 import argparse
-from dotenv import load_dotenv
-import PyPDF2
 import shutil
 import datetime
+from dotenv import load_dotenv
 from config import Config
-load_dotenv()
+from pdf_processor import PDFProcessor
+from pathlib import Path
 
+load_dotenv()
 config = Config.get_instance()
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-def chunk_text(text, chunk_size=800):
-    """Splits text into smaller chunks to fit model token limits."""
-    tokenizer = tiktoken.encoding_for_model("text-embedding-ada-002")
-    tokens = tokenizer.encode(text)
-    chunks = [tokens[i:i + chunk_size] for i in range(0, len(tokens), chunk_size)]
-    return [tokenizer.decode(chunk) for chunk in chunks]
-
-
 class EmbeddingProcessor:
-    def __init__(self, load_embeddings=True):
+    """Handles FAISS vector store creation, fully independent from fine-tuning."""
+    
+    EMBEDDING_METADATA_FILE = config.DATA_DIR / "embedding_metadata.json"
+    
+    def __init__(self):
         self.vector_store = None
         self.metadata = self._load_metadata()
-        if load_embeddings:
-            self._update_vector_store_if_needed()
-    
-    
+
     def _load_metadata(self):
-        if os.path.exists(config.METADATA_FILE):
-            with open(config.METADATA_FILE, "r") as f:
+        """Loads embedding-specific metadata (completely separate from fine-tuning)."""
+        if self.EMBEDDING_METADATA_FILE.exists():
+            with self.EMBEDDING_METADATA_FILE.open("r", encoding="utf-8") as f:
                 return json.load(f)
         return []
 
-    def _update_vector_store_if_needed(self):
-        existing_games = {entry["game"] for entry in self.metadata}
-        new_files = [f for f in os.listdir(config.PDF_FOLDER) if f.endswith(".pdf") and f.replace(".pdf", "") not in existing_games]
-        
-        if not new_files:
-            self._load_vector_store()
+    def update_embeddings(self):
+        """Generates embeddings directly from PDFs/GT, unrelated to fine-tuning."""
+        pdf_processor = PDFProcessor()
+        extracted_data = pdf_processor.extract_text_from_pdfs()
+
+        if not extracted_data:
+            print("No text found for embeddings! Please add PDFs/GT files.")
             return
-        
-        self._add_new_pdfs_to_vector_store(new_files)
 
-    def _load_vector_store(self):
-        if os.path.exists(config.VECTOR_STORE_FILE):
-            self.vector_store = faiss.read_index(config.VECTOR_STORE_FILE)
-        else:
-            self.vector_store = faiss.IndexFlatL2(1536)
-    
-    def _add_new_pdfs_to_vector_store(self, new_files):
         embeddings = []
-        texts = []
+        metadata = []
 
-        for filename in new_files:
-            game_name = filename.replace(".pdf", "")
-            pdf_path = os.path.join(config.PDF_FOLDER, filename)
-            text = self._load_or_extract_text(game_name, pdf_path)
-            
-            if text:
-                chunks = chunk_text(text)
-                for chunk in chunks:
-                    embedding = self._get_embedding(chunk)
-                    embeddings.append(embedding)
-                    texts.append({"game": game_name, "text": chunk})
-        
-        if embeddings:
-            embeddings = np.array(embeddings).astype("float32")
-            
-            if self.vector_store is None:
-                self.vector_store = faiss.IndexFlatL2(embeddings.shape[1])
-            
-            self.vector_store.add(embeddings)
-            faiss.write_index(self.vector_store, config.VECTOR_STORE_FILE)
-            
-            self.metadata.extend(texts)
-            with open(config.METADATA_FILE, "w") as f:
-                json.dump(self.metadata, f)
-    
-    def _load_or_extract_text(self, game_name, pdf_path):
-        extracted_text_file = os.path.join(config.EXTRACTED_FOLDER, f"{game_name}.txt")
-        
-        if os.path.exists(extracted_text_file):
-            with open(extracted_text_file, "r", encoding="utf-8") as f:
-                return f.read().strip()
-        
-        text = self._extract_text_from_pdf(pdf_path)
-        
-        if text:
-            with open(extracted_text_file, "w", encoding="utf-8") as f:
-                f.write(text)
-        
-        return text
+        for game_name, text in extracted_data.items():
+            chunks = self.chunk_text(text)
+            for chunk in chunks:
+                embeddings.append(self._get_embedding(chunk))
+                metadata.append({"game": game_name, "text": chunk})
 
-    def _extract_text_from_pdf(self, pdf_path):
-        text = ""
-        with open(pdf_path, "rb") as file:
-            reader = PyPDF2.PdfReader(file)
-            for page in reader.pages:
-                extracted = page.extract_text()
-                if extracted:
-                    text += extracted + "\n"
-        return text.strip()
-    
+        embeddings = np.array(embeddings).astype("float32")
+
+        if self.vector_store is None:
+            self.vector_store = faiss.IndexFlatL2(embeddings.shape[1])
+
+        self.vector_store.add(embeddings)
+        faiss.write_index(self.vector_store, str(config.VECTOR_STORE_FILE))
+
+        with self.EMBEDDING_METADATA_FILE.open("w", encoding="utf-8") as f:
+            json.dump(metadata, f, indent=4)
+
+        print(f"Embeddings created and stored in {config.VECTOR_STORE_FILE}")
+        print(f"Embedding metadata saved to {self.EMBEDDING_METADATA_FILE}")
+
     def _get_embedding(self, text):
+        """Generates embeddings using OpenAI."""
         response = client.embeddings.create(input=[text], model="text-embedding-ada-002")
         return np.array(response.data[0].embedding)
 
-
-def create_fine_tuning_dataset():
-    """Creates a fine-tuning dataset from new board game rulebooks only."""
-    processor = EmbeddingProcessor(load_embeddings=False)
-    
-    # Load existing fine-tuned games
-    fine_tuned_games = set()
-    if os.path.exists(config.FINE_TUNED_METADATA_PATH):
-        with open(config.FINE_TUNED_METADATA_PATH, "r") as f:
-            fine_tuned_games = set(json.load(f).get("games", []))
-
-    dataset = []
-    for game in processor.metadata:
-        game_name = game["game"]
-
-        if game_name in fine_tuned_games:
-            print(f"Skipping {game_name} - Already fine-tuned.")
-            continue  # Skip games already fine-tuned
-
-        chunks = [game["text"][i:i+800] for i in range(0, len(game["text"]), 800)]
-        for chunk in chunks:
-            dataset.append({
-                "messages": [
-                    {"role": "system", "content": f"You are an expert on the board game {game_name} rules."},
-                    {"role": "user", "content": "Explain the rules of this game."},
-                    {"role": "assistant", "content": chunk}
-                ]
-            })
-
-    if not dataset:
-        print("No new games to fine-tune!")
-        return
-
-    output_path = os.path.join("../data", "fine_tune_dataset.json")
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(dataset, f, indent=4)
-
-    print(f"Fine-tuning dataset saved to {output_path}")
+    @staticmethod
+    def chunk_text(text, chunk_size=800):
+        """Splits text into smaller chunks."""
+        return [text[i:i + chunk_size] for i in range(0, len(text), chunk_size)]
 
 
-def fine_tune():
-    dataset_path = os.path.join("../data", "fine_tune_dataset.json")
-    
-    if not os.path.exists(dataset_path):
-        print("Fine-tuning dataset not found! Run 'create-dataset' mode first.")
-        return
+class FineTuneProcessor:
+    """Handles fine-tuning dataset creation and submission."""
 
-    # Upload dataset to OpenAI
-    with open(dataset_path, "rb") as f:
-        file_response = client.files.create(file=f, purpose="fine-tune")
+    FINE_TUNE_DATASET_FILE = config.DATA_DIR / "fine_tune_dataset.jsonl"
 
-    file_id = file_response.id  # Get the uploaded file ID
+    def __init__(self):
+        self.archive_folder = config.ARCHIVE_FOLDER
+        self.fine_tuned_model_path = config.FINE_TUNED_MODEL_PATH
 
-    # Check if we already have a fine-tuned model
-    fine_tuned_model_id = None
-    if os.path.exists(config.FINE_TUNED_MODEL_PATH):
-        with open(config.FINE_TUNED_MODEL_PATH, "r") as f:
-            fine_tuned_data = json.load(f)
-            fine_tuned_model_id = fine_tuned_data.get("model_id")
 
-    # Determine whether to create a new fine-tuned model or continue training an existing one
-    if fine_tuned_model_id is None:
-        print("No fine-tuned model found. Creating a new model...")
+    def create_fine_tuning_dataset(self):
+        """Creates dataset for fine-tuning (no relation to embeddings)."""
+        pdf_processor = PDFProcessor()
+        extracted_data = pdf_processor.extract_text_from_pdfs()
+
+        if not extracted_data:
+            print("No text found for fine-tuning! Please add PDFs/GT files.")
+            return
+
+        dataset = []
+        for game_name, text in extracted_data.items():
+            chunks = EmbeddingProcessor.chunk_text(text)
+            for chunk in chunks:
+                dataset.append({
+                    "messages": [
+                        {"role": "system", "content": f"You are an expert on the board game {game_name} rules."},
+                        {"role": "user", "content": "Explain the rules of this game."},
+                        {"role": "assistant", "content": chunk}
+                    ]
+                })
+
+        with self.FINE_TUNE_DATASET_FILE.open("w", encoding="utf-8") as f:
+            for example in dataset:
+                f.write(json.dumps(example) + "\n")
+
+        print(f"Fine-tuning dataset saved to {self.FINE_TUNE_DATASET_FILE}")
+
+
+    def fine_tune(self):
+        """Submits fine-tuning dataset to OpenAI, either starting fresh or continuing from the latest fine-tuned model."""
+
+        if not self.FINE_TUNE_DATASET_FILE.exists():
+            print("Fine-tuning dataset not found! Run 'create-dataset' first.")
+            return
+
+        # Upload fine-tune dataset file
+        with self.FINE_TUNE_DATASET_FILE.open("rb") as f:
+            file_response = client.files.create(file=f, purpose="fine-tune")
+
+        # Load existing fine-tuned model ID (if any)
+        starting_model = "gpt-4o-mini-2024-07-18"  # Default base model
+        if self.fine_tuned_model_path.exists():
+            with self.fine_tuned_model_path.open("r", encoding="utf-8") as f:
+                metadata = json.load(f)
+                previous_model_id = metadata.get("model_id")
+
+                if previous_model_id:
+                    print(f"Continuing fine-tuning from existing fine-tuned model: {previous_model_id}")
+                    starting_model = previous_model_id  # Use existing fine-tuned model as base
+
+        # Submit fine-tuning job to OpenAI
         response = client.fine_tuning.jobs.create(
-            training_file=file_id,
-            model="gpt-4o-mini"
-        )
-    else:
-        print(f"Existing fine-tuned model found: {fine_tuned_model_id}. Fine-tuning further...")
-        response = client.fine_tuning.jobs.create(
-            training_file=file_id,
-            model=fine_tuned_model_id  # Continue training on the existing fine-tuned model
+            training_file=file_response.id,
+            model=starting_model
         )
 
-    fine_tuned_model_id = response.id
-    print(f"Fine-tuning job submitted: {fine_tuned_model_id}")
+        # Save new model ID to track for future runs
+        with self.fine_tuned_model_path.open("w", encoding="utf-8") as f:
+            json.dump({"model_id": response.id}, f)
 
-    with open(config.FINE_TUNED_MODEL_PATH, "w") as f:
-        json.dump({"model_id": fine_tuned_model_id}, f)
+        # Archive the dataset file
+        archive_path = self.archive_folder / f"fine_tune_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.jsonl"
+        self.archive_folder.mkdir(parents=True, exist_ok=True)
+        shutil.move(self.FINE_TUNE_DATASET_FILE, archive_path)
 
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    archive_path = os.path.join(config.ARCHIVE_FOLDER, f"fine_tune_{timestamp}.json")
+        print(f"Fine-tuning job submitted. Dataset archived at {archive_path}")
+        print(f"Fine-tune Job ID: {response.id}")
 
-    os.makedirs(config.ARCHIVE_FOLDER, exist_ok=True)
-    shutil.move(dataset_path, archive_path)
 
-    print(f"Archived fine-tune dataset: {archive_path}")
-    print(f"Fine-tuning completed! Model ID saved: {fine_tuned_model_id}")
+    def check_fine_tune_status(self):
+        """Checks fine-tuning job status from OpenAI."""
+        if not self.fine_tuned_model_path.exists():
+            print("No fine-tuned model found. Run 'fine-tune' first.")
+            return
+
+        with self.fine_tuned_model_path.open("r", encoding="utf-8") as f:
+            job_id = json.load(f).get("model_id")
+
+        if not job_id:
+            print("Invalid job_id in fine-tuned model metadata.")
+            return
+
+        response = client.fine_tuning.jobs.retrieve(job_id)
+
+        print(f"Fine-tune job '{job_id}' is currently: {response.status.upper()}")
+    
+    def estimate_fine_tuning_cost(self):
+        """Estimates the fine-tuning cost for the current dataset in fine_tune_dataset.jsonl."""
+
+        dataset_path = self.FINE_TUNE_DATASET_FILE
+
+        if not dataset_path.exists():
+            print("Error: fine_tune_dataset.jsonl not found. Run 'create-dataset' first.")
+            return
+
+        total_tokens = 0
+
+        with dataset_path.open("r", encoding="utf-8") as f:
+            for line in f:
+                example = json.loads(line)
+                for message in example["messages"]:
+                    total_tokens += len(message["content"].split()) + len(message["content"]) // 4
+
+        cost_per_million_tokens = 3  # gpt-4o-mini as of February 2025
+        total_cost = (total_tokens / 1_000_000) * cost_per_million_tokens
+
+        print(f"Estimated fine-tuning cost for gpt-4o-mini:")
+        print(f" - Total Tokens: {total_tokens}")
+        print(f" - Estimated Cost: ${total_cost:.2f} USD")
+
+
+def print_help():
+    """Prints help information about all modes."""
+    print("""
+Available modes:
+
+make-embedding     - Create embeddings from PDFs/GT. Produces vector store & embedding metadata.
+
+create-dataset     - Create dataset for fine-tuning only. Produces fine_tune_dataset.json.
+
+fine-tune          - Submit fine-tuning dataset to OpenAI (works only with fine_tune_dataset.json).
+
+check-status       - Check status of latest fine-tuning job.
+
+estimate-cost      - Estimate the cost of fine-tuning based on current fine_tune_dataset.json.
+
+help                - Show this help message.
+
+Example usage:
+python3 src/rulebook_processor.py create-dataset
+python3 src/rulebook_processor.py make-embedding
+python3 src/rulebook_processor.py fine-tune
+python3 src/rulebook_processor.py check-status
+python3 src/rulebook_processor.py estimate-cost
+    """)
+
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("mode", choices=["fine-tune", "make-embedding", "create-dataset"], help="Choose operation mode")
+    parser.add_argument("mode", choices=[
+    "fine-tune", "make-embedding", "create-dataset", "check-status", "estimate-cost", "help"
+    ], help="Choose operation mode")
     args = parser.parse_args()
 
     if args.mode == "make-embedding":
         processor = EmbeddingProcessor()
-    elif args.mode == "fine-tune":
-        fine_tune()
+        processor.update_embeddings()
+
     elif args.mode == "create-dataset":
-        create_fine_tuning_dataset()
+        processor = FineTuneProcessor()
+        processor.create_fine_tuning_dataset()
+
+    elif args.mode == "fine-tune":
+        processor = FineTuneProcessor()
+        processor.fine_tune()
+
+    elif args.mode == "check-status":
+        processor = FineTuneProcessor()
+        processor.check_fine_tune_status()
+    
+    elif args.mode == "estimate-cost":
+        processor = FineTuneProcessor()
+        processor.estimate_fine_tuning_cost()
+
+    elif args.mode == "help":
+        print_help()

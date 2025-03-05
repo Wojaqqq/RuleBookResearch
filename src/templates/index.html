@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Board Game Rule Assistant - POC</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+
+<h2 class="mb-4">Board Game Rule Assistant - Proof of Concept</h2>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="game">Choose Game:</label>
+        <select class="form-control" id="game" name="game" required>
+            <option value="" disabled selected>-- Select a Game --</option>
+            {% for game in games %}
+                <option value="{{ game }}" {% if game == selected_game %}selected{% endif %}>{{ game }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="query">Enter Your Rule Question:</label>
+        <textarea class="form-control" id="query" name="query" rows="3" required>{{ query or '' }}</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Ask Both Models</button>
+    <a href="/" class="btn btn-secondary">Clear</a>
+</form>
+
+{% if fine_tuned_response and regular_response %}
+<hr>
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h5>Fine-tuned Model Response</h5>
+        <pre>{{ fine_tuned_response }}</pre>
+    </div>
+    <div class="col-md-6">
+        <h5>Regular GPT-4o-mini Response</h5>
+        <pre>{{ regular_response }}</pre>
+    </div>
+</div>
+{% endif %}
+
+</body>
+</html>
