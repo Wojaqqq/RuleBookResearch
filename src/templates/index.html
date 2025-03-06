@@ -4,13 +4,16 @@
     <title>Board Game Rule Assistant</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .side-image {
+        body {
+            margin: 0;
+            padding: 0;
             height: 100vh;
-            object-fit: cover;
+            overflow: hidden;
         }
         .content-area {
             display: flex;
             height: 100vh;
+            overflow: hidden;
         }
         .form-area {
             flex-grow: 1;
@@ -18,7 +21,19 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+        .side-image {
+            height: 100vh;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -53,11 +68,11 @@
                 <label class="form-check-label">Normal GPT-4o-mini</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="models" value="fine_tuned">
+                <input class="form-check-input" type="checkbox" name="models" value="fine_tuned" checked>
                 <label class="form-check-label">Fine-tuned Model</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="models" value="embedding">
+                <input class="form-check-input" type="checkbox" name="models" value="embedding" checked>
                 <label class="form-check-label">Embedding Search</label>
             </div>
 
@@ -67,26 +82,57 @@
 
         {% if responses %}
         <hr>
-        <div class="row mt-4">
+        <h5>Responses:</h5>
+        <div class="row">
             {% if 'gpt4o' in selected_models %}
             <div class="col-md-4">
-                <h5>GPT-4o-mini Response</h5>
+                <h6>GPT-4o-mini Response</h6>
                 <pre>{{ responses['gpt4o'] }}</pre>
+                <small class="text-muted">Tokens Used: {{ tokens['gpt4o'] }} | Time: {{ times['gpt4o']|round(2) }} seconds</small>
             </div>
             {% endif %}
+            
             {% if 'fine_tuned' in selected_models %}
             <div class="col-md-4">
-                <h5>Fine-tuned Model Response</h5>
+                <h6>Fine-tuned Model Response</h6>
                 <pre>{{ responses['fine_tuned'] }}</pre>
+                <small class="text-muted">Tokens Used: {{ tokens['fine_tuned'] }} | Time: {{ times['fine_tuned']|round(2) }} seconds</small>
             </div>
             {% endif %}
+            
             {% if 'embedding' in selected_models %}
             <div class="col-md-4">
-                <h5>Embedding Search Response</h5>
+                <h6>Embedding Search Response</h6>
                 <pre>{{ responses['embedding'] }}</pre>
+                <small class="text-muted">Tokens Used: {{ tokens['embedding'] }} (from retrieved fragment) | Time: {{ times['embedding']|round(2) }} seconds</small>
             </div>
             {% endif %}
         </div>
+        
+
+        <hr>
+        <h5>Which model gave the best answer?</h5>
+
+        <!-- Evaluation Form -->
+        <form method="POST">
+            <input type="hidden" name="game" value="{{ selected_game }}">
+            <input type="hidden" name="query" value="{{ query }}">
+
+            {% for model in ['gpt4o', 'fine_tuned', 'embedding'] %}
+                <input type="hidden" name="{{ model }}_answer" value="{{ responses.get(model, '') }}">
+                <input type="hidden" name="{{ model }}_tokens" value="{{ tokens.get(model, 0) }}">
+                <input type="hidden" name="{{ model }}_time" value="{{ times.get(model, 0) }}">
+            {% endfor %}
+
+            {% for model in selected_models %}
+            <div>
+                <input type="radio" id="{{ model }}" name="chosen_model" value="{{ model }}" required>
+                <label for="{{ model }}">{{ model|capitalize }}</label>
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-success mt-3">Submit Evaluation</button>
+        </form>
         {% endif %}
     </div>
 
