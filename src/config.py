@@ -1,10 +1,13 @@
 from pathlib import Path
 
+
 class Config:
     instance = None
 
     def __init__(self):
-        self.BASE_DIR = Path(__file__).resolve().parent
+        # TODO check if ran by docker then one parent (it will be src?) or python parent.parent
+        self.BASE_DIR = Path(__file__).resolve().parent.parent
+        print(f"[DEBUG] BASE DIR: {self.BASE_DIR}")
         self.DATA_DIR = self.BASE_DIR / "data"
 
         self.PDF_FOLDER = self.DATA_DIR / "pdfs"
@@ -17,19 +20,18 @@ class Config:
 
         self.GAMES = [
             "Witcher Old World",
-            "Game of Thrones",
             "Letters from Whitechapel",
             "Monopoly",
+            "Game of Thrones",
             "Saboteur",
             "Sid Meiers Civilization",
-            "Civilization Through the Ages"
+            "Civilization Through the Ages",
         ]
 
         self.EMBEDDING_MAPPING = {
             "Monopoly": "monopoly",
             "Letters from Whitechapel": "letters",
-            "Game of Thrones": "game_of_thrones",
-            "Witcher Old World": "witcher"
+            "Witcher Old World": "witcher",
         }
 
     @classmethod
