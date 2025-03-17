@@ -9,5 +9,7 @@ services:
       - ./data:/app/data
     env_file:
       - .env
+    environment:
+      - RUNNING_IN_DOCKER=1
     ports:
       - "5000:5000"

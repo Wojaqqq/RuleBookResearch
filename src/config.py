@@ -1,13 +1,15 @@
 from pathlib import Path
+import os
 
 
 class Config:
     instance = None
 
     def __init__(self):
-        # TODO check if ran by docker then one parent (it will be src?) or python parent.parent
-        self.BASE_DIR = Path(__file__).resolve().parent.parent
-        print(f"[DEBUG] BASE DIR: {self.BASE_DIR}")
+        if os.getenv("RUNNING_IN_DOCKER"):
+            self.BASE_DIR = Path(__file__).resolve().parent
+        else:
+            self.BASE_DIR = Path(__file__).resolve().parent.parent
         self.DATA_DIR = self.BASE_DIR / "data"
 
         self.PDF_FOLDER = self.DATA_DIR / "pdfs"

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stored Results</title>
+    <style>
+        /* Style for navigation button */
+        .nav-button {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .nav-button:hover {
+            background-color: #218838;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 50px; /* Ensures table is not hidden behind button */
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        td {
+            background-color: #ffffff;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9; /* Alternating row colors */
+        }
+    </style>
+</head>
+<body>
+    <button class="nav-button" onclick="window.location.href='/'">Back to Home</button>
+
+    <h2>Recent Results</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Timestamp</th>
+            <th>Question</th>
+            <th>GPT-4o Answer</th>
+            <th>Fine-tuned Answer</th>
+            <th>Embedding Answer</th>
+            <th>GPT-4o Tokens</th>
+            <th>Fine-tuned Tokens</th>
+            <th>Embedding Tokens</th>
+            <th>GPT-4o Time (s)</th>
+            <th>Fine-tuned Time (s)</th>
+            <th>Embedding Time (s)</th>
+            <th>Chosen Model</th>
+        </tr>
+        {% for row in results %}
+        <tr>
+            <td>{{ row[0] }}</td>  <!-- ID -->
+            <td>{{ row[1] }}</td>  <!-- Timestamp -->
+            <td>{{ row[2][:50] }}...</td>  <!-- Question -->
+            <td>{{ row[3][:50] }}...</td>  <!-- GPT-4o Answer -->
+            <td>{{ row[4][:50] }}...</td>  <!-- Fine-tuned Answer -->
+            <td>{{ row[5][:50] }}...</td>  <!-- Embedding Answer -->
+            <td>{{ row[6] }}</td>  <!-- GPT-4o Tokens -->
+            <td>{{ row[7] }}</td>  <!-- Fine-tuned Tokens -->
+            <td>{{ row[8] }}</td>  <!-- Embedding Tokens -->
+            <td>{{ row[9] }}</td>  <!-- GPT-4o Time -->
+            <td>{{ row[10] }}</td>  <!-- Fine-tuned Time -->
+            <td>{{ row[11] }}</td>  <!-- Embedding Time -->
+            <td>{{ row[12] }}</td>  <!-- Chosen Model -->
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

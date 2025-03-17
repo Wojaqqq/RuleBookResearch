@@ -284,7 +284,7 @@ class FineTuneProcessor:
         cost_per_million_tokens = 3  # gpt-4o-mini as of February 2025
         total_cost = (total_tokens / 1_000_000) * cost_per_million_tokens
 
-        print(f"Estimated fine-tuning cost for gpt-4o-mini:")
+        print("Estimated fine-tuning cost for gpt-4o-mini:")
         print(f" - Total Tokens: {total_tokens}")
         print(f" - Estimated Cost: ${total_cost:.2f} USD")
 
@@ -309,28 +309,20 @@ class EmbeddingSearch:
 
     def search_relevant_text(self, query, game_name):
         if not self.metadata or self.vector_store.ntotal == 0:
-            print("[DEBUG] No embeddings loaded.")
-            return False, "", 0
-
-        print(f"[DEBUG] Looking for game_name {game_name}")
+            return False, ""
         mapped_game_name = (
             config.EMBEDDING_MAPPING.get(game_name, game_name).strip().lower()
         )
-        print(f"[DEBUG] Searching for game in mapped game name: {mapped_game_name}")
 
         query_embedding = self._get_embedding(query).astype("float32").reshape(1, -1)
 
         distances, indices = self.vector_store.search(query_embedding, 5)
 
-        print(f"[DEBUG] Embedding search distances: {distances}")
-
         for idx, distance in zip(indices[0], distances[0]):
             entry = self.metadata[idx]
             if entry["game"].strip().lower() == mapped_game_name:
-                print(f"[DEBUG] Found match at distance {distance}")
                 return True, entry["text"]
 
-        print(f"[DEBUG] No match found for {mapped_game_name}")
         return False, ""
 
     def _get_embedding(self, text):

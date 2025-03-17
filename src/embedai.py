@@ -1,5 +1,6 @@
 import argparse
 import requests
+from psycopg2 import pool
 import os
 from dotenv import load_dotenv
 from processors import EmbeddingProcessor, FineTuneProcessor
@@ -61,6 +62,18 @@ def test_openai_connection():
         exit(1)
 
 
+def test_neon_connection():
+    """Check Neon database connectivity and exit."""
+    connection_string = os.getenv("DATABASE_URL")
+    connection_pool = pool.SimpleConnectionPool(1, 10, connection_string)
+    if connection_pool:
+        print("Neon database connected!")
+        exit(0)
+    else:
+        print("Cannot connect to Neon database.")
+        exit(1)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="EmbedAI - A tool for embeddings, dataset creation, and fine-tuning openAI models."
@@ -85,6 +98,7 @@ if __name__ == "__main__":
 
     if args.mode == "test-connection":
         test_openai_connection()
+        test_neon_connection()
 
     embedding_processor = (
         EmbeddingProcessor() if args.mode == "make-embedding" else None

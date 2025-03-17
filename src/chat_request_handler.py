@@ -2,10 +2,10 @@ import os
 import openai
 import time
 import json
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from dotenv import load_dotenv
 from config import Config
-from database import save_result, init_db
+from database import save_result, init_db, fetch_recent_results
 from processors import EmbeddingSearch
 
 load_dotenv()
@@ -35,6 +35,8 @@ def ask_gpt(user_query, game_name, model):
 
 
 def ask_with_embeddings(game_name, user_query):
+    if game_name not in config.EMBEDDING_MAPPING.keys():
+        return "No embeddings", 0, 0
     search_engine = EmbeddingSearch()
 
     start_time = time.time()
@@ -116,7 +118,6 @@ def index():
                     model_id = metadata.get("model_id")
             else:
                 model_id = "gpt-4o-mini"
-            print(f"[DEBUG] model id: {model_id}")
 
             responses["fine_tuned"], token_counts["fine_tuned"], times["fine_tuned"] = (
                 ask_gpt(query, game, model_id)
@@ -144,6 +145,18 @@ def index():
     return render_template(
         "index.html", games=config.GAMES, responses={}, selected_models=[]
     )
+
+
+@app.route("/results", methods=["GET"])
+def display_results():
+    """Display results in a structured HTML table."""
+    limit = request.args.get("limit", default=10, type=int)
+    results = fetch_recent_results(limit)
+
+    if not results:
+        return "<h3>No results found.</h3>"
+
+    return render_template("results.html", results=results)
 
 
 if __name__ == "__main__":
