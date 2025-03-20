@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Board Game Rule Assistant</title>
+    <title>RuleBookMaster</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -35,9 +35,29 @@
             height: 100vh;
             object-fit: cover;
         }
+        /* Navigation buttons */
+        .nav-button {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .nav-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
+
+<!-- "View Results" button in the top-right corner -->
+<a href="/results" class="nav-button">View Results</a>
 
 <div class="content-area">
     <div>
@@ -104,11 +124,10 @@
             <div class="col-md-4">
                 <h6>Embedding Search Response</h6>
                 <pre>{{ responses['embedding'] }}</pre>
-                <small class="text-muted">Tokens Used: {{ tokens['embedding'] }} (from retrieved fragment) | Time: {{ times['embedding']|round(2) }} seconds</small>
+                <small class="text-muted">Tokens Used: {{ tokens['embedding'] }} | Time: {{ times['embedding']|round(2) }} seconds</small>
             </div>
             {% endif %}
         </div>
-        
 
         <hr>
         <h5>Which model gave the best answer?</h5>
