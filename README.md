@@ -25,23 +25,27 @@ project_root/
 ```
 
 ## Start the app
-Create .env file from .env.template and fill with OPENAI API TOKEN and Neon database URL. Then:
+Create .env file from .env.template and fill with OPENAI API TOKEN and Neon database URL. 
+
+Then run it:
 ```bash
-docker-compose up --build
+docker-compose up --build -d
 ```
 Finally go to:
 ```bash
 http://localhost:5000
 ```
 
-## Stop the app
+# Run embedai functions
+To use embedari functionalities run container then you can run command inside it like that:
 ```bash
-Ctrl + C
+docker exec -it rulebookmaster_app python3 embedai.py make-embedding
 ```
-or
+
+## Stop the app
 ```bash
 docker-compose down
 ```
 
 #### TODO
-Change fine_tuned_model.json to save model name insted of model id
+Change fine_tuned_model.json to save model name insted of model id.
