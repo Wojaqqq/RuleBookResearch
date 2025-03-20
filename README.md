@@ -25,7 +25,7 @@ project_root/
 ```
 
 ## Start the app
-Create .env file from .env.template and fill with OPENAI API TOKEN. Then:
+Create .env file from .env.template and fill with OPENAI API TOKEN and Neon database URL. Then:
 ```bash
 docker-compose up --build
 ```
