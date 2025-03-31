@@ -1,0 +1,30 @@
+{
+    "models": [
+        {
+            "model_id": "ft:gpt-4o-mini-2024-07-18:rulebookmasterorg::BH7mY4l4",
+            "job_id": "ftjob-6USnYiXtEPyNYE7EjnBysiaj",
+            "base_model": "gpt-4o-mini-2024-07-18",
+            "suffix": "rulebook-master-03-2025",
+            "timestamp": "2025-03-31_13-01-10",
+            "status": "succeeded",
+            "dataset_info": {
+                "included_rulebooks": [
+                    "game-of-thrones",
+                    "sid-meiers-civilization",
+                    "monopoly",
+                    "civilization-through-the-ages",
+                    "witcher-old-world",
+                    "saboteur",
+                    "ticket-to-ride",
+                    "neuroshima-hex",
+                    "letters-from-whitechapel"
+                ],
+                "timestamp": "2025-03-31_13-01-10",
+                "examples_count": 1135
+            },
+            "archive_path": "/home/tomasz/Projects/RuleBookResearch/data/fine_tune_archive/fine_tune_2025-03-31_13-01-10.jsonl",
+            "fine_tuned_model": "ft:gpt-4o-mini-2024-07-18:rulebookmasterorg::BH7mY4l4"
+        }
+    ],
+    "last_used_model_id": "ft:gpt-4o-mini-2024-07-18:rulebookmasterorg::BH7mY4l4"
+}
