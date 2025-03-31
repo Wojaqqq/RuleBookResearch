@@ -1,9 +1,16 @@
 import argparse
 import requests
-from psycopg2 import pool
 import os
+import sys
+from pathlib import Path
 from dotenv import load_dotenv
-from processors import EmbeddingProcessor, FineTuneProcessor
+
+script_dir = Path(__file__).resolve().parent
+sys.path.insert(0, str(script_dir))
+
+from processors.embedding_processor import EmbeddingProcessor
+from processors.fine_tune_processor import FineTuneProcessor
+from processors.common import config
 
 load_dotenv()
 
@@ -20,11 +27,13 @@ Available modes:
 
   fine-tune          - Submit fine-tuning dataset to OpenAI (works only with fine_tune_dataset.json).
 
-  check-status       - Check status of latest fine-tuning job.
+  check-status       - Check status of all fine-tuning jobs.
 
   estimate-cost      - Estimate the cost of fine-tuning based on current fine_tune_dataset.json.
 
   test-connection    - Check if OpenAI API is accessible with the provided API key.
+
+  list-models        - List all available models and previously fine-tuned models.
 
   help               - Show this help message.
 
@@ -35,6 +44,7 @@ Example usage:
   python3 embedai.py check-status
   python3 embedai.py estimate-cost
   python3 embedai.py test-connection
+  python3 embedai.py list-models
 """
     )
     exit(0)
@@ -49,29 +59,58 @@ def test_openai_connection():
         )
         exit(1)
 
-    response = requests.get(
-        "https://api.openai.com/v1/models",
-        headers={"Authorization": f"Bearer {api_key}"},
-    )
+    try:
+        response = requests.get(
+            "https://api.openai.com/v1/models",
+            headers={"Authorization": f"Bearer {api_key}"},
+            timeout=30,
+        )
 
-    if response.status_code == 200:
-        print("OpenAI API connected!")
-        exit(0)
-    else:
-        print(f"API error: {response.status_code} - {response.text}")
+        if response.status_code == 200:
+            print("OpenAI API connected!")
+            exit(0)
+        else:
+            print(f"API error: {response.status_code} - {response.text}")
+            exit(1)
+    except Exception as e:
+        print(f"Connection error: {e}")
         exit(1)
 
 
-def test_neon_connection():
-    """Check Neon database connectivity and exit."""
-    connection_string = os.getenv("DATABASE_URL")
-    connection_pool = pool.SimpleConnectionPool(1, 10, connection_string)
-    if connection_pool:
-        print("Neon database connected!")
-        exit(0)
-    else:
-        print("Cannot connect to Neon database.")
+def check_requirements():
+    """Check if required folders exist."""
+    if not config.PDF_DIR.exists():
+        print(f"Error: PDF folder {config.PDF_DIR} does not exist!")
+        print("Please create the folder and add PDF files before running the program.")
         exit(1)
+
+
+def list_models():
+    """List all available models and previously fine-tuned models."""
+    fine_tune_processor = FineTuneProcessor()
+    models = fine_tune_processor._get_available_models()
+
+    print("Available base models:")
+    base_models = [m for m in models if not m.startswith("ft:")]
+    for i, model in enumerate(base_models):
+        print(f"{i+1}. {model}")
+
+    print("\nPreviously fine-tuned models:")
+    ft_models = fine_tune_processor.models_info["models"]
+    if not ft_models:
+        print("  No fine-tuned models found.")
+    else:
+        for i, model in enumerate(ft_models):
+            print(f"{i+1}. ID: {model['model_id']}")
+            print(f"   Status: {model['status']}")
+            print(f"   Base model: {model.get('base_model', 'unknown')}")
+            print(f"   Created: {model.get('timestamp', 'unknown')}")
+            print(
+                f"   Rulebooks: {', '.join(model.get('dataset_info', {}).get('included_rulebooks', []))}"
+            )
+            print()
+
+    exit(0)
 
 
 if __name__ == "__main__":
@@ -87,10 +126,12 @@ if __name__ == "__main__":
             "check-status",
             "estimate-cost",
             "test-connection",
+            "list-models",
             "help",
         ],
         help="Choose an operation mode",
     )
+
     args = parser.parse_args()
 
     if args.mode == "help":
@@ -98,7 +139,13 @@ if __name__ == "__main__":
 
     if args.mode == "test-connection":
         test_openai_connection()
-        test_neon_connection()
+
+    if args.mode == "list-models":
+        list_models()
+
+    # Check folder requirements before proceeding
+    if args.mode not in ["help", "test-connection"]:
+        check_requirements()
 
     embedding_processor = (
         EmbeddingProcessor() if args.mode == "make-embedding" else None

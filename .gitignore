@@ -1,20 +1,35 @@
 __pycache__/
+*.py[cod]
+*$py.class
 
 .venv/
 env/
 venv/
 
-!/data/pdfs/
-!/data/extracted/
-!/data/GT/
-/data/fine_tune_archive/
+.env
+!.env.template
 
 /data/pdfs/*
 /data/extracted/*
 /data/GT/*
+/data/fine_tune_archive/*
 
-.env
-!.env.template
+/data/*.json
+/data/*.jsonl
+
+!/data/embedding_metadata.json
+!/data/fine_tune_dataset.jsonl
+!/data/fine_tuned_models_info.json
+!/data/vector_store.faiss
+
+!/data/pdfs/.gitkeep
+!/data/extracted/.gitkeep
+!/data/GT/.gitkeep
+!/data/fine_tune_archive/.gitkeep
 
 *.log
 *.tmp
+
+.vscode/
+.idea/
+.DS_Store
